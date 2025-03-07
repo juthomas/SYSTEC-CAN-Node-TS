@@ -584,12 +584,18 @@ function initHardware(onMessageReceived) {
     devicePlugged = true;
     return 0;
 }
+/* Demo begin below */
+// Custom callback for received CAN messages
 function onMessageReceived(msg) {
     console.log('Received CAN MSG', msg);
 }
+// Initialize hardware with custom callback
 initHardware(onMessageReceived);
+// Variable to toggle PGA light
 let onoff = false;
+// Interval ID for sending CAN messages
 let intervalId;
+// Interval to send CAN commands to toggle PGA light
 intervalId = setInterval(() => {
     const canMsgToSendBuffer = {
         m_dwID: 0x000C8019,
@@ -610,7 +616,7 @@ intervalId = setInterval(() => {
     const sendMsgCanReturn = m_write_msg(canMsgToSendBuffer);
     console.log('SEND MSG CAN RETURN', sendMsgCanReturn);
 }, 2000);
-// Add handler for SIGINT signal (Ctrl+C) to clean up resources
+// Handler for SIGINT signal (Ctrl+C) to clean up resources
 process_1.default.on('SIGINT', () => {
     console.log('\nReceived SIGINT (Ctrl+C). Cleaning up en cours...');
     if (intervalId) {
